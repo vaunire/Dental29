@@ -13,10 +13,7 @@ load_dotenv()
 # Секретный ключ для безопасности проекта
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-# Режим отладки: True для разработки, False для продакшена
 DEBUG = os.getenv('DEBUG')
-
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -36,9 +33,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'tailwind',
+    'tailwind', 
     'tailwind_config',
-    'django_browser_reload'
+    'django_browser_reload',
+
+    'addresses',
+    'appointments',
+    'contracts',
+    'dental',
+    'employees',
+    'patients',
+    'services',
+    'pages'
 ]
 
 TAILWIND_APP_NAME = 'tailwind_config'
@@ -46,7 +52,6 @@ INTERNAL_IPS = ["127.0.0.1"]
 NPM_BIN_PATH = 'npm.cmd'
 
 MIDDLEWARE = [
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = '_config.urls'
