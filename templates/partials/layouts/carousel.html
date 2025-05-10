@@ -1,0 +1,91 @@
+{% load static %}
+<!-- Карусель -->
+<div class="relative w-full mt-24 overflow-hidden">
+    <!-- Контейнер для изображений -->
+    <div class="carousel-inner" id="carouselInner">
+        <img src="{% static 'images/bg1.webp' %}" alt="Slide 1" class="carousel-item h-[600px] w-full object-cover">
+        <img src="{% static 'images/bg2.webp' %}" alt="Slide 2" class="carousel-item h-[600px] w-full object-cover">
+        <img src="{% static 'media/bg1.png' %}" alt="Slide 3" class="carousel-item h-[600px] w-full object-cover">
+    </div>
+    <!-- Форма (статичная, с фиксированной высотой, скругленными углами и отступом) -->
+    <div class="absolute top-16 left-26 w-full sm:w-1/2 md:w-1/3  h-auto bg-white bg-opacity-90 p-6 flex flex-col z-10 rounded-lg">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 relative">
+            Оформить визит в клинику
+        </h2>
+        <p class="text-gray-600 mb-6">Пожалуйста, выберите отделение и укажите удобное время визита. Администратор клиники свяжется с Вами для согласования даты и времени посещения.</p>
+        <form action="#" method="post" class="text-sm space-y-4">
+            {% csrf_token %}
+            <div>
+                <input type="text" name="full_name" placeholder="ФИО" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+            <div>
+                <input type="tel" name="phone" placeholder="Телефон" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+            <div>
+                <input type="text" name="visit_date_time" placeholder="Укажите желаемую дату и время визита" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" name="data_processing" id="data_processing" class="h-3.5 w-3.5 text-blue-600 focus:ring-blue-500 border-gray-200 rounded" required>
+                <label for="data_processing" class="ml-2 text-sm text-gray-600">
+                    Согласие на обработку 
+                    <a href="#" class="text-blue-600 underline hover:text-blue-800">персональных данных</a>
+                </label>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white p-3 rounded-lg font-bold hover:bg-blue-700 transition-colors">Записаться</button>
+        </form>
+    </div>
+    <!-- Стрелки навигации -->
+    <div class="absolute top-1/2 left-10 transform -translate-y-1/2 text-white text-2xl cursor-pointer hover:text-gray-300 z-10" onclick="moveSlide(-1)">
+        ❮
+    </div>
+    <div class="absolute top-1/2 right-10 transform -translate-y-1/2 text-white text-2xl cursor-pointer hover:text-gray-300 z-10" onclick="moveSlide(1)">
+        ❯
+    </div>
+    <!-- Индикаторы -->
+    <div class="absolute bottom-4 right-4 flex gap-2 z-10">
+        <span class="w-4 h-1 bg-gray-300 bg-opacity-50 cursor-pointer" onclick="currentSlide(0)"></span>
+        <span class="w-4 h-1 bg-gray-300 bg-opacity-50 cursor-pointer" onclick="currentSlide(1)"></span>
+        <span class="w-4 h-1 bg-gray-300 bg-opacity-50 cursor-pointer" onclick="currentSlide(2)"></span>
+    </div>
+</div>
+
+<style>
+    .carousel-inner {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+    .carousel-item {
+        min-width: 100%;
+    }
+</style>
+
+<script>
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.carousel-item');
+    const indicators = document.querySelectorAll('.carousel-indicators span');
+    const totalSlides = slides.length;
+
+    function updateCarousel() {
+        document.getElementById('carouselInner').style.transform = `translateX(-${currentIndex * 100}%)`;
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('bg-opacity-100', index === currentIndex);
+            indicator.classList.toggle('bg-opacity-50', index !== currentIndex);
+        });
+    }
+
+    function moveSlide(direction) {
+        currentIndex = (currentIndex + direction + totalSlides) % totalSlides;
+        updateCarousel();
+    }
+
+    function currentSlide(index) {
+        currentIndex = index;
+        updateCarousel();
+    }
+
+    // Автоматическая смена слайдов с задержкой 7 секунд
+    setInterval(() => moveSlide(1), 7000);
+
+    // Инициализация
+    updateCarousel();
+</script>
